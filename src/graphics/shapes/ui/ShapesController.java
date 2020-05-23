@@ -323,15 +323,17 @@ public class ShapesController extends Controller {
 			Iterator<Shape> new_iter = new_model.iterator();
 			if (new_model.getArraySize() == 1) {
 				System.out.println("1 Shape");
-				if (new_iter.next() instanceof SCollection) {
-					
+				Shape coll = new_iter.next();
+				if (coll instanceof SCollection) {
+					new_iter = ((SCollection) coll).iterator();
+					while(new_iter.hasNext()) {
+						this.model.add(new_iter.next());
+					}
 				}
 			}
 			else if (new_model.getArraySize() >= 2) {
 				this.model.add(new_model);
 			}
-			
-			System.out.println(this.model.getArraySize() + " " + new_model.getArraySize());
 		}
 		
 		this.view.invalidate();
