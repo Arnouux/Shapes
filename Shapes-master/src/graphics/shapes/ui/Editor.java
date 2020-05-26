@@ -7,7 +7,7 @@ import graphics.shapes.SText;
 import graphics.shapes.attributes.ColorAttributes;
 import graphics.shapes.attributes.FontAttributes;
 import graphics.shapes.attributes.SelectionAttributes;
-
+import graphics.shapes.ui.ColorChooser;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,7 +39,7 @@ public class Editor extends JFrame
 {
 	ShapesView sview;
 	SCollection model=new SCollection();
-	ColorChooser ccp = new ColorChooser();
+	ColorChooser cc = new ColorChooser();
 
 	
 	public Editor()
@@ -57,13 +57,14 @@ public class Editor extends JFrame
 		this.buildModel();
 		
 		this.sview = new ShapesView(this.model);
-		this.sview.setPreferredSize(new Dimension(500,500));
+		this.sview.setPreferredSize(new Dimension(800,800));
 		this.getContentPane().add(this.sview, java.awt.BorderLayout.CENTER);
 		
 		ImageIcon image = new ImageIcon("..\\td_shapes\\img\\Icone.png");
 	    this.setIconImage(image.getImage());
 	    //new
 	    createMenuBar();
+	    
 	    
 	    
 	}	
@@ -113,90 +114,57 @@ public class Editor extends JFrame
 	{
 		Editor frame = new Editor();
 		
-		createColorChooser(frame); //new
+		//createColorChooser(frame); //new
 		
 		frame.pack();
 		frame.setVisible(true);
 	}
 
 
-	//new
+/************************************ SECTION BARRE DE MENU ************************************/
+	
+	
 	public static void createColorChooser(Editor frame)
 	{
-		ColorChooser ccd = new ColorChooser();
+		ColorChooser cc = new ColorChooser();
 		Dialog color= new Dialog(frame, "Color Panel");
-		color.setPreferredSize(new Dimension(400, 400));
+		color.setPreferredSize(new Dimension(600, 600));
 		color.setLocationRelativeTo(frame);
 		color.pack();
-		color.add(ccd);
+		color.add(cc);
 		color.setVisible(true);
 		color.pack();
 	}
-	//new
+	
 	public void createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 	    this.setJMenuBar(menuBar);
 	    
 	    JMenu menu = new JMenu("File");
-	    
 	    JMenu circle = new JMenu("Circle");
-	    
-	    
 	    JMenu rectangle = new JMenu("Rectangle");
-	    
-	    
-	    
-	    JMenuItem rPink = new JMenuItem("Pink");
-	    JMenuItem rRed = new JMenuItem("Red");
-	    JMenuItem rYellow = new JMenuItem("Yellow");
-	    JMenuItem rBlue = new JMenuItem("Blue");
-	    JMenuItem rGreen = new JMenuItem("Green");
-	    
-	    JMenuItem cPink = new JMenuItem("Pink");
-	    JMenuItem cRed = new JMenuItem("Red");
-	    JMenuItem cYellow = new JMenuItem("Yellow");
-	    JMenuItem cBlue = new JMenuItem("Blue");
-	    JMenuItem cGreen = new JMenuItem("Green");
-	    
-	    //Barre de Menu Principale
+
 	    menuBar.add(menu);
 	    menuBar.add(circle);
 	    menuBar.add(rectangle);
 	    
-	    //Barre de MenuItem de Rectangle
-	    rectangle.add(rPink);
-	    rectangle.add(rRed);
-	    rectangle.add(rYellow);
-	    rectangle.add(rBlue);
-	    rectangle.add(rGreen);
-	    
-	  //Barre de MenuItem de Circle
-	    circle.add(cPink);
-	    circle.add(cRed);
-	    circle.add(cYellow);
-	    circle.add(cBlue);
-	    circle.add(cGreen);
-	    
+	   
 
 	    
 	    rectangle.addMenuListener(new MenuListener() {
 
 	        @Override
 	        public void menuSelected(MenuEvent e) {
-	            System.out.println("Color ?");
+	            createDefaultRectangle();
 	            
 		    		
 	        }
 	        @Override
 	        public void menuDeselected(MenuEvent e) {
-	            System.out.println("menuDeselected");
-
 	        }
 
 	        @Override
 	        public void menuCanceled(MenuEvent e) {
-	            System.out.println("menuCanceled");
-
 	        }
 	    });
 	    
@@ -204,44 +172,43 @@ public class Editor extends JFrame
 
 	        @Override
 	        public void menuSelected(MenuEvent e) {
-	            System.out.println("Color ?");
-	            
-		    		
+	        	createDefaultCircle();
+	            	
 	        }
 	        @Override
 	        public void menuDeselected(MenuEvent e) {
-	            System.out.println("menuDeselected");
-
 	        }
 
 	        @Override
 	        public void menuCanceled(MenuEvent e) {
-	            System.out.println("menuCanceled");
-
 	        }
 	    });
 	    
 	   
 	    
 	}
-	
-	public void createDefaultCircle(Color col) {
+
+	public void createDefaultCircle() {
+		Color Filled = JColorChooser.showDialog(this.cc,"Choose Circle Fill Color",cc.banner.getBackground());
+		Color Stroked = JColorChooser.showDialog(this.cc,"Choose Circle Strock Color",cc.banner.getBackground());
 		Rectangle windowBounds= this.getBounds();
 		SCircle c = new SCircle(new Point(windowBounds.width/2,windowBounds.height/2), Math.min(windowBounds.width, windowBounds.height)/5);
-		c.addAttributes(new ColorAttributes(true,true,col,Color.RED));
+		c.addAttributes(new ColorAttributes(true,true,Filled,Stroked));
 		c.addAttributes(new SelectionAttributes());
 		this.model.add(c);
 		this.sview.invalidate();
 	}	
-	public void createDefaultRectangle(Color col) {
+	
+	public void createDefaultRectangle() {
+		Color Filled = JColorChooser.showDialog(this.cc,"Choose Circle Color",cc.banner.getBackground());
+		Color Stroked = JColorChooser.showDialog(this.cc,"Choose Circle Color",cc.banner.getBackground());
 		Rectangle windowBounds= this.getBounds();
 		SRectangle r = new SRectangle(new Point(windowBounds.width/2,windowBounds.height/2),Math.min(windowBounds.width, windowBounds.height)/5,Math.min(windowBounds.width, windowBounds.height)/5);
-		r.addAttributes(new ColorAttributes(true,true,col,Color.RED));
+		r.addAttributes(new ColorAttributes(true,true,Filled,Stroked));
 		r.addAttributes(new SelectionAttributes());
 		this.model.add(r);
 		this.sview.invalidate();
 	}
-
 
 	}
 

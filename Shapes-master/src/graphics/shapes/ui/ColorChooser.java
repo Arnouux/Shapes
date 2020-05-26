@@ -33,70 +33,166 @@ package graphics.shapes.ui;
 
 
 
+//import java.awt.*;
+//import java.awt.event.*;
+//import javax.swing.*;
+//import javax.swing.event.*;
+//import javax.swing.colorchooser.*;
+//
+///* ColorChooserDemo.java requires no other files. */
+//public class ColorChooser extends JPanel
+//                              implements ChangeListener {
+//
+//	public JColorChooser cc;
+//    public JLabel banner;
+//    public Color color;
+//
+//    public ColorChooser() {
+//        super(new BorderLayout());
+//
+//        //Set up the banner at the top of the window
+//        banner = new JLabel("Paint But Better",
+//                            JLabel.CENTER);
+//        banner.setForeground(Color.black);
+//        banner.setBackground(Color.white);
+//        banner.setOpaque(true);
+//        banner.setFont(new Font("SansSerif", Font.BOLD, 24));
+//        banner.setPreferredSize(new Dimension(50, 65));
+//
+//        JPanel bannerPanel = new JPanel(new BorderLayout());
+//        bannerPanel.add(banner, BorderLayout.CENTER);
+//        //bannerPanel.setBorder(BorderFactory.createTitledBorder("Banner"));
+//
+//        //Set up color chooser for setting text color
+//        cc = new JColorChooser(banner.getForeground());
+//        cc.getSelectionModel().addChangeListener(this);
+//        cc.setBorder(BorderFactory.createTitledBorder(
+//                                             "Choose Text Color"));
+//        this.color=cc.getColor();
+//        add(bannerPanel, BorderLayout.CENTER);
+//        add(cc, BorderLayout.PAGE_END);
+//    }
+//
+//    public void stateChanged(ChangeEvent e) {
+//    	this.color = cc.getColor();
+//        banner.setForeground(this.color);
+//        banner.setBackground(this.color);
+//        
+//        System.out.println(this.color);
+//        System.out.println(cc.getColor());
+//        
+//    }
+//    
+//    public Color getColor() {
+//    	System.out.println("CCCCC"+this.color);
+//    	System.out.println("CCCCC"+cc.getColor());
+//    	//this.color=cc.getColor();
+//        //return this.color;
+//    	return banner.getForeground();
+//    }
+//
+//
+//    /**
+//     * Create the GUI and show it.  For thread safety,
+//     * this method should be invoked from the
+//     * event-dispatching thread.
+//     */
+//    private static void createAndShowGUI() {
+//        //Create and set up the window.
+//        JFrame frame = new JFrame("ColorChooser");
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.setPreferredSize(new Dimension(700, 700));
+//        //Create and set up the content pane.
+//        ColorChooser cc = new ColorChooser();
+//        cc.setOpaque(true); //content panes must be opaque
+//        frame.setContentPane(cc);
+//
+//        //Display the window.
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
+//      
+//}
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.colorchooser.*;
 
-/* ColorChooserDemo.java requires no other files. */
-public class ColorChooser extends JPanel
-                              implements ChangeListener {
+public class ColorChooser extends JPanel implements ActionListener,ChangeListener {
+	
+public JLabel banner;
+public JColorChooser cc1, cc2;
 
-    protected JColorChooser tcc;
-    protected JLabel banner;
+public ColorChooser() {
+super(new BorderLayout());
 
-    public ColorChooser() {
-        super(new BorderLayout());
+//Set up banner to use as custom preview panel
+banner = new JLabel("Paint but Better",JLabel.CENTER);
+banner.setForeground(Color.white);
+banner.setBackground(Color.blue);
+banner.setOpaque(true);
+banner.setFont(new Font("SansSerif", Font.BOLD, 24));
+banner.setPreferredSize(new Dimension(100, 65));
 
-        //Set up the banner at the top of the window
-        banner = new JLabel("Welcome to the Tutorial Zone!",
-                            JLabel.CENTER);
-        banner.setForeground(Color.yellow);
-        banner.setBackground(Color.blue);
-        banner.setOpaque(true);
-        banner.setFont(new Font("SansSerif", Font.BOLD, 24));
-        banner.setPreferredSize(new Dimension(50, 65));
+JPanel bannerPanel = new JPanel(new BorderLayout());
+bannerPanel.add(banner, BorderLayout.CENTER);
+bannerPanel.setBorder(BorderFactory.createTitledBorder("Banner"));
 
-        JPanel bannerPanel = new JPanel(new BorderLayout());
-        bannerPanel.add(banner, BorderLayout.CENTER);
-        //bannerPanel.setBorder(BorderFactory.createTitledBorder("Banner"));
+//Set up color chooser for setting background color
+cc1 = new JColorChooser();
+cc1.getSelectionModel().addChangeListener(this);
+cc1.setBorder(BorderFactory.createTitledBorder("Choose Font Color"));
 
-        //Set up color chooser for setting text color
-        tcc = new JColorChooser(banner.getForeground());
-        tcc.getSelectionModel().addChangeListener(this);
-        tcc.setBorder(BorderFactory.createTitledBorder(
-                                             "Choose Text Color"));
 
-        add(bannerPanel, BorderLayout.CENTER);
-        add(tcc, BorderLayout.PAGE_END);
-    }
 
-    public void stateChanged(ChangeEvent e) {
-        Color newColor = tcc.getColor();
-        banner.setForeground(newColor);
-    }
+//Remove the preview panel
+cc1.setPreviewPanel(new JPanel());
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("ColorChooserDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(400, 400));
-        //Create and set up the content pane.
-        JComponent newContentPane = new ColorChooser();
-        newContentPane.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(newContentPane);
 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
+//Override the chooser panels with our own
 
- 
-    
+
+add(bannerPanel, BorderLayout.PAGE_START);
+add(cc1, BorderLayout.CENTER);
+
+}
+
+public void actionPerformed(ActionEvent e) {
+Color newColor = JColorChooser.showDialog(ColorChooser.this,"Choose Background Color",banner.getBackground());
+if (newColor != null) {
+banner.setBackground(newColor);
+}
+}
+
+public void stateChanged(ChangeEvent e) {
+Color newColor1 = cc1.getColor();
+//Color newColor2 = cc2.getColor();
+banner.setForeground(newColor1);
+//banner.setForeground(newColor2);
+}
+
+/**
+* Create the GUI and show it.  For thread safety,
+* this method should be invoked from the
+* event-dispatching thread.
+*/
+private static void createAndShowGUI() {
+//Create and set up the window.
+JFrame frame = new JFrame("ColorChooser");
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+//Create and set up the content pane.
+JComponent newContentPane = new ColorChooser ();
+newContentPane.setOpaque(true); //content panes must be opaque
+frame.setContentPane(newContentPane);
+
+//Display the window.
+frame.pack();
+frame.setVisible(true);
+}
+
+
+
 }
