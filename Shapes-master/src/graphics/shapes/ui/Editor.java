@@ -187,6 +187,22 @@ public class Editor extends JFrame
 	        }
 	    });
 	    
+	    text.addMenuListener(new MenuListener() {
+
+	        @Override
+	        public void menuSelected(MenuEvent e) {
+	        	createDefaultText();
+	            	
+	        }
+	        @Override
+	        public void menuDeselected(MenuEvent e) {
+	        }
+
+	        @Override
+	        public void menuCanceled(MenuEvent e) {
+	        }
+	    });
+	    
 	   
 	    
 	}
