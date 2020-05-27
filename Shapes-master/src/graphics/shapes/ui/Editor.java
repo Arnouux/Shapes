@@ -144,10 +144,12 @@ public class Editor extends JFrame
 	    JMenu menu = new JMenu("File");
 	    JMenu circle = new JMenu("Circle");
 	    JMenu rectangle = new JMenu("Rectangle");
+	    JMenu text = new JMenu("Text");
 
 	    menuBar.add(menu);
 	    menuBar.add(circle);
 	    menuBar.add(rectangle);
+	    menuBar.add(text);
 	    
 	   
 
