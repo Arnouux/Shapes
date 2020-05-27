@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
@@ -209,7 +210,19 @@ public class Editor extends JFrame
 		this.model.add(r);
 		this.sview.invalidate();
 	}
-
+	
+	public void createDefaultText(){
+		Color Filled = JColorChooser.showDialog(this.cc,"Choose Circle Color",cc.banner.getBackground());
+		Color Stroked = JColorChooser.showDialog(this.cc,"Choose Circle Color",cc.banner.getBackground());
+		String response = JOptionPane.showInputDialog("choose a text !");
+		Rectangle windowBounds=this.getBounds();
+		SText t= new SText(new Point(windowBounds.width/2,windowBounds.height/2),response);
+		t.addAttributes(new ColorAttributes(true,true,Filled,Stroked));
+		t.addAttributes(new SelectionAttributes());
+	    t.addAttributes(new FontAttributes());
+	    this.model.add(t);
+	    this.sview.invalidate();
+	}
 	}
 
 
