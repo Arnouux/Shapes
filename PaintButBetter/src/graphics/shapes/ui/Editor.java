@@ -20,6 +20,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -42,33 +46,33 @@ public class Editor extends JFrame
 	ShapesView sview;
 	SCollection model=new SCollection();
 	ColorChooser cc = new ColorChooser();
-
+	static Dimension preferredSize=new Dimension(800, 800);
 	
 	public Editor()
 	{	
-		super("Shapes Editor");
-
+		super("PAINT BUT BETTER");
+		
+		
+		
 		this.addWindowListener(new java.awt.event.WindowAdapter()
 		{
-			public void windowClosing(java.awt.event.WindowEvent evt)
+			public void windowClosing(WindowEvent evt)
 			{
 				System.exit(0);
 			}
+			
+			
 		});
-
+		
 		this.buildModel();
 		
 		this.sview = new ShapesView(this.model);
-		this.sview.setPreferredSize(new Dimension(800,800));
+		this.sview.setPreferredSize(preferredSize);
 		this.getContentPane().add(this.sview, java.awt.BorderLayout.CENTER);
 		
 		ImageIcon image = new ImageIcon("..\\img\\APP1.png");
 	    this.setIconImage(image.getImage());
-	    //new
-	    createMenuBar();
-	    
-	    
-	    
+	    createMenuBar();  
 	}	
 		
 	
@@ -112,10 +116,8 @@ public class Editor extends JFrame
 	
 	public static void main(String[] args)
 	{
+		LoadingScreen();
 		Editor frame = new Editor();
-		
-		//createColorChooser(frame); //new
-		
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -157,14 +159,11 @@ public class Editor extends JFrame
 
 	        @Override
 	        public void menuSelected(MenuEvent e) {
-	            createDefaultRectangle();
-	            
-		    		
+	            createDefaultRectangle();	           		    		
 	        }
 	        @Override
 	        public void menuDeselected(MenuEvent e) {
 	        }
-
 	        @Override
 	        public void menuCanceled(MenuEvent e) {
 	        }
@@ -174,13 +173,11 @@ public class Editor extends JFrame
 
 	        @Override
 	        public void menuSelected(MenuEvent e) {
-	        	createDefaultCircle();
-	            	
+	        	createDefaultCircle();	            	
 	        }
 	        @Override
 	        public void menuDeselected(MenuEvent e) {
 	        }
-
 	        @Override
 	        public void menuCanceled(MenuEvent e) {
 	        }
@@ -190,13 +187,11 @@ public class Editor extends JFrame
 
 	        @Override
 	        public void menuSelected(MenuEvent e) {
-	        	createDefaultText();
-	            	
+	        	createDefaultText();  	
 	        }
 	        @Override
 	        public void menuDeselected(MenuEvent e) {
 	        }
-
 	        @Override
 	        public void menuCanceled(MenuEvent e) {
 	        }
@@ -215,6 +210,7 @@ public class Editor extends JFrame
 		c.addAttributes(new SelectionAttributes());
 		this.model.add(c);
 		this.sview.invalidate();
+		
 	}	
 	
 	public void createDefaultRectangle() {
@@ -226,7 +222,7 @@ public class Editor extends JFrame
 		r.addAttributes(new SelectionAttributes());
 		this.model.add(r);
 		this.sview.invalidate();
-		this.addKeyListener(this.sview.getController());
+
 	}
 	
 	public void createDefaultText(){
@@ -241,7 +237,27 @@ public class Editor extends JFrame
 	    this.model.add(t);
 	    this.sview.invalidate();
 	}
+	
+	public static void LoadingScreen()
+	{	
+		JFrame ls = new JFrame();
+		ImageIcon waitingScreen = new ImageIcon("..\\img\\APP1.png");
+		JLabel ws=new JLabel(waitingScreen);
+		ws.setSize(preferredSize.height*(4/5), preferredSize.height*(4/5) );
+		ls.add(ws);
+		ls.setPreferredSize(preferredSize);
+	    ls.setIconImage(waitingScreen.getImage());
+	    ls.pack();
+	    ls.setVisible(true);
+	    long t= System.currentTimeMillis();
+	    long end = t+1500;
+	    while(System.currentTimeMillis() < end) {}
+		ls.setVisible(false);
+		ls.dispatchEvent(new WindowEvent(ls, WindowEvent.WINDOW_CLOSING));
+		
 	}
+	
+}
 
 	
 
