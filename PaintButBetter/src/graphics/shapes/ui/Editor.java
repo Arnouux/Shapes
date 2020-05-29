@@ -126,87 +126,73 @@ public class Editor extends JFrame
 /************************************ SECTION BARRE DE MENU ************************************/
 	
 	
-	public static void createColorChooser(Editor frame)
+//	public static void createColorChooser(Editor frame)
+//	{
+//		ColorChooser cc = new ColorChooser();
+//		Dialog color= new Dialog(frame, "Color Panel");
+//		color.setPreferredSize(new Dimension(600, 600));
+//		color.setLocationRelativeTo(frame);
+//		color.pack();
+//		color.add(cc);
+//		color.setVisible(true);
+//		color.pack();
+//	}
+	
+	public static void createModificationPanel(Editor frame)
 	{
-		ColorChooser cc = new ColorChooser();
-		Dialog color= new Dialog(frame, "Color Panel");
-		color.setPreferredSize(new Dimension(600, 600));
-		color.setLocationRelativeTo(frame);
-		color.pack();
-		color.add(cc);
-		color.setVisible(true);
-		color.pack();
+		Dialog mp = new Dialog(frame);
+		JPanel jp;
 	}
+	
 	
 	public void createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 	    this.setJMenuBar(menuBar);
-	    
-	    JMenu menu = new JMenu("File");
-	    JMenu circle = new JMenu("Circle");
-	    JMenu rectangle = new JMenu("Rectangle");
-	    JMenu text = new JMenu("Text");
+	    JMenu createNewShape = new JMenu("New Shape");
+	    JMenuItem circle = new JMenuItem("Circle");
+	    JMenuItem rectangle = new JMenuItem("Rectangle");
+	    JMenuItem text = new JMenuItem("Text");
 
-	    menuBar.add(menu);
-	    menuBar.add(circle);
-	    menuBar.add(rectangle);
-	    menuBar.add(text);
-	    
-	   
+	    menuBar.add(createNewShape);
+	    createNewShape.add(rectangle);
+	    createNewShape.add(circle);
+	    createNewShape.add(text);
 
+	    rectangle.addActionListener(new ActionListener() {
+	    	@Override
+	    	public void actionPerformed(ActionEvent e)
+	    	{
+	    	createDefaultRectangle(); 
+	    	}});
 	    
-	    rectangle.addMenuListener(new MenuListener() {
-
-	        @Override
-	        public void menuSelected(MenuEvent e) {
-	            createDefaultRectangle();	           		    		
-	        }
-	        @Override
-	        public void menuDeselected(MenuEvent e) {
-	        }
-	        @Override
-	        public void menuCanceled(MenuEvent e) {
-	        }
-	    });
+	    circle.addActionListener(new ActionListener() {
+	    	@Override
+	    	public void actionPerformed(ActionEvent e)
+	    	{
+	    	createDefaultCircle(); 
+	    	}});
 	    
-	    circle.addMenuListener(new MenuListener() {
-
-	        @Override
-	        public void menuSelected(MenuEvent e) {
-	        	createDefaultCircle();	            	
-	        }
-	        @Override
-	        public void menuDeselected(MenuEvent e) {
-	        }
-	        @Override
-	        public void menuCanceled(MenuEvent e) {
-	        }
-	    });
-	    
-	    text.addMenuListener(new MenuListener() {
-
-	        @Override
-	        public void menuSelected(MenuEvent e) {
-	        	createDefaultText();  	
-	        }
-	        @Override
-	        public void menuDeselected(MenuEvent e) {
-	        }
-	        @Override
-	        public void menuCanceled(MenuEvent e) {
-	        }
-	    });
-	    
-	   
-	    
+	    text.addActionListener(new ActionListener() {
+	    	@Override
+	    	public void actionPerformed(ActionEvent e)
+	    	{
+	    	createDefaultText(); 
+	    	}});
+    
 	}
 
 	public void createDefaultCircle() {
-		Color Filled = JColorChooser.showDialog(this.cc,"Choose Circle Fill Color",cc.banner.getBackground());
-		Color Stroked = JColorChooser.showDialog(this.cc,"Choose Circle Strock Color",cc.banner.getBackground());
+		Color filledColor = Color.BLACK;
+		Color strokedColor = Color.BLACK;
+		Color chosenColor = null;
+
+		chosenColor = JColorChooser.showDialog(this, "Circle fill color chooser", filledColor);
+		if (chosenColor != null) filledColor = chosenColor;
+		
+		
 		Rectangle windowBounds= this.getBounds();
 		SCircle c = new SCircle(new Point(windowBounds.width/2,windowBounds.height/2), Math.min(windowBounds.width, windowBounds.height)/5);
-		c.addAttributes(new ColorAttributes(true,true,Filled,Stroked));
+		c.addAttributes(new ColorAttributes(true,true,filledColor,strokedColor));
 		c.addAttributes(new SelectionAttributes());
 		this.model.add(c);
 		this.sview.invalidate();
@@ -214,11 +200,20 @@ public class Editor extends JFrame
 	}	
 	
 	public void createDefaultRectangle() {
-		Color Filled = JColorChooser.showDialog(this.cc,"Choose Rectangle Fill Color",cc.banner.getBackground());
-		Color Stroked = JColorChooser.showDialog(this.cc,"Choose Rectangle Stock Color",cc.banner.getBackground());
+		
+		Color filledColor = Color.BLACK;
+		Color strokedColor = Color.BLACK;
+		Color chosenColor = null;
+
+		chosenColor = JColorChooser.showDialog(this, "Rectangle  fill color chooser", filledColor);
+		if (chosenColor != null) filledColor = chosenColor;
+
+		chosenColor = JColorChooser.showDialog(this, "Rectangle strock color chooser", strokedColor);
+		
+		
 		Rectangle windowBounds= this.getBounds();
 		SRectangle r = new SRectangle(new Point(windowBounds.width/2,windowBounds.height/2),Math.min(windowBounds.width, windowBounds.height)/5,Math.min(windowBounds.width, windowBounds.height)/5);
-		r.addAttributes(new ColorAttributes(true,true,Filled,Stroked));
+		r.addAttributes(new ColorAttributes(true,true,filledColor,strokedColor));
 		r.addAttributes(new SelectionAttributes());
 		this.model.add(r);
 		this.sview.invalidate();
@@ -226,12 +221,18 @@ public class Editor extends JFrame
 	}
 	
 	public void createDefaultText(){
-		Color Filled = JColorChooser.showDialog(this.cc,"Choose Back Color",cc.banner.getBackground());
-		Color Stroked = JColorChooser.showDialog(this.cc,"Choose Text Color",cc.banner.getBackground());
+		Color filledColor = Color.BLACK;
+		Color strokedColor = Color.BLACK;
+		Color chosenColor = null;
+
+		chosenColor = JColorChooser.showDialog(this, "Circle fill color chooser", filledColor);
+		if (chosenColor != null) filledColor = chosenColor;
+
+		chosenColor = JColorChooser.showDialog(this, "Circle strock color chooser", strokedColor);
 		String response = JOptionPane.showInputDialog("What's your text ?");
 		Rectangle windowBounds=this.getBounds();
 		SText t= new SText(new Point(windowBounds.width/2,windowBounds.height/2),response);
-		t.addAttributes(new ColorAttributes(true,true,Filled,Stroked));
+		t.addAttributes(new ColorAttributes(true,true,filledColor,strokedColor));
 		t.addAttributes(new SelectionAttributes());
 	    t.addAttributes(new FontAttributes());
 	    this.model.add(t);
@@ -256,6 +257,7 @@ public class Editor extends JFrame
 		ls.dispatchEvent(new WindowEvent(ls, WindowEvent.WINDOW_CLOSING));
 		
 	}
+	
 	
 }
 

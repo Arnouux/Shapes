@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Rectangle;
 
@@ -19,6 +20,7 @@ public class ShapesController extends Controller {
 	private SCollection model;
 	private ShapesView view;
 	
+	private ArrayList<SCollection> historic = new ArrayList<SCollection>();
 	
 	private int HANDLER_SIZE_ADMITTER = 6;
 	
@@ -31,7 +33,7 @@ public class ShapesController extends Controller {
 	public ShapesController(Object model) {
 		super(model);
 		this.model = (SCollection) model;
-		
+		this.historic.add((SCollection) model);
 	}
 
 	public void setView(View view)
@@ -39,7 +41,9 @@ public class ShapesController extends Controller {
 		this.view = (ShapesView) view;
 	}
 	
-
+	public ArrayList<SCollection> getHistoric() {
+		return this.historic;
+	}
 	
 	public Shape getTarget(Point p) {
 		Iterator<Shape> iter = this.model.iterator();
@@ -114,6 +118,8 @@ public class ShapesController extends Controller {
 		Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
 		
 		this.view.setCursor(cursor);
+		
+		this.historic.add(this.model.copy());
 	}
 	
 	@Override
@@ -145,7 +151,6 @@ public class ShapesController extends Controller {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		
-
 		
 		if (this.handlingTop) {
 			this.shapeHandling.changeSize(e.getX()-this.mouseCoordonates.x,
@@ -235,6 +240,7 @@ public class ShapesController extends Controller {
 	public void keyPressed(KeyEvent evt) {
 		int key = evt.getKeyCode();
 		
+		
 		Point p = MouseInfo.getPointerInfo().getLocation();
 		
 		// get x,y relative from window position.
@@ -283,10 +289,10 @@ public class ShapesController extends Controller {
 			
 
 			this.model = new_model;
-			this.view.setModel(new_model);			
+			this.view.setModel(this.model);			
 		}
 		
-		else if (key == KeyEvent.VK_D) {	
+		else if (key == KeyEvent.VK_D) {
 			Shape shape = getTarget(p);
 			Iterator<Shape> iter = this.model.iterator();
 			while(iter.hasNext()){
@@ -299,10 +305,31 @@ public class ShapesController extends Controller {
 		}
 		
 		else if (key == KeyEvent.VK_Z) {
-			Iterator<Shape> iter = this.model.iterator();
-			System.out.println("-------------------");
-			while(iter.hasNext()){
-				System.out.println(iter.next());
+			
+			if (evt.isControlDown()) {
+				System.out.println(this.historic.size());
+				if(this.historic.size()>0)
+				{
+					this.model = this.historic.get(this.historic.size() - 1);
+				
+					for (int i = 0; i < this.historic.size(); i++) {
+						Iterator<Shape> iter = this.historic.get(i).iterator();
+						System.out.println("-------------------");
+						while(iter.hasNext()){
+							System.out.println(iter.next());
+						}
+					}
+					this.view.setModel(this.model);
+					this.historic.remove(this.historic.size() - 1);
+				}
+				
+			}
+			else {
+				Iterator<Shape> iter = this.model.iterator();
+				System.out.println("-------------------");
+				while(iter.hasNext()){
+					System.out.println(iter.next());
+				}
 			}
 		}
 		
@@ -324,13 +351,15 @@ public class ShapesController extends Controller {
 			
 			Iterator<Shape> new_iter = new_model.iterator();
 			if (new_model.getArraySize() == 1) {
-				System.out.println("1 Shape");
 				Shape coll = new_iter.next();
 				if (coll instanceof SCollection) {
 					new_iter = ((SCollection) coll).iterator();
 					while(new_iter.hasNext()) {
 						this.model.add(new_iter.next());
 					}
+				}
+				else {
+					this.model.add(coll);
 				}
 			}
 			else if (new_model.getArraySize() >= 2) {
@@ -341,5 +370,5 @@ public class ShapesController extends Controller {
 		this.view.invalidate();
 	}
 
-	
+
 }

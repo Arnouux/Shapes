@@ -2,7 +2,10 @@ package graphics.shapes;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+
+import graphics.shapes.attributes.ColorAttributes;
 import graphics.shapes.attributes.FontAttributes;
+import graphics.shapes.attributes.SelectionAttributes;
 
 public class SText extends Shape{
 	
@@ -65,4 +68,16 @@ public class SText extends Shape{
 	public void accept(ShapeVisitor sv) {
 		sv.visitText(this);
 	}
+	
+	public SText copy() {
+        SText new_text = new SText(this.loc, this.text);
+        ColorAttributes color = (ColorAttributes) this.getAttributes("color");
+        new_text.addAttributes(new ColorAttributes(color.isFilled(),color.isStroked(),color.getColorFilled(),color.getColorStroked()));
+        new_text.addAttributes(new FontAttributes());
+        FontAttributes font = (FontAttributes) this.getAttributes("font");
+        FontAttributes new_font = (FontAttributes) new_text.getAttributes("font");
+        new_font.setFont(font.getFontSize());
+        new_text.addAttributes(new SelectionAttributes());
+        return new_text;
+    }
 }

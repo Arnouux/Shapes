@@ -3,6 +3,9 @@ package graphics.shapes;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import graphics.shapes.attributes.ColorAttributes;
+import graphics.shapes.attributes.SelectionAttributes;
+
 public class SRectangle extends Shape {
 
 	private Rectangle rect = new Rectangle();
@@ -54,4 +57,12 @@ public class SRectangle extends Shape {
 	public void accept(ShapeVisitor sv) {
 		sv.visitRectangle(this);
 	}
+	
+	public SRectangle copy() {
+        SRectangle new_rect = new SRectangle(this.getLoc(), this.rect.height, this.rect.width);
+        ColorAttributes color = (ColorAttributes) this.getAttributes("color");
+        new_rect.addAttributes(new ColorAttributes(color.isFilled(),color.isStroked(),color.getColorFilled(),color.getColorStroked()));
+        new_rect.addAttributes(new SelectionAttributes());
+        return new_rect;
+    }
 }

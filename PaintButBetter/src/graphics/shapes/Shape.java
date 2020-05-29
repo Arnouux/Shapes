@@ -30,4 +30,6 @@ public abstract class Shape {
 	public abstract void accept(ShapeVisitor sv);
 	
 	public abstract void changeSize(int x, int y, boolean top);
+
+	public abstract Shape copy();
 }

@@ -3,6 +3,9 @@ package graphics.shapes;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import graphics.shapes.attributes.ColorAttributes;
+import graphics.shapes.attributes.SelectionAttributes;
+
 public class SCircle extends Shape {
 	
 	private int radius;
@@ -57,4 +60,12 @@ public class SCircle extends Shape {
 	public void accept(ShapeVisitor sv) {
 		sv.visitCircle(this);
 	}
+	
+	public SCircle copy() {
+        SCircle new_circle = new SCircle(this.loc, this.radius);
+        ColorAttributes color = (ColorAttributes) this.getAttributes("color");
+        new_circle.addAttributes(new ColorAttributes(color.isFilled(),color.isStroked(),color.getColorFilled(),color.getColorStroked()));
+        new_circle.addAttributes(new SelectionAttributes());
+        return new_circle;
+    }
 }

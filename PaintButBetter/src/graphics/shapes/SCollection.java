@@ -3,6 +3,9 @@ package graphics.shapes;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Iterator;
+
+import graphics.shapes.attributes.SelectionAttributes;
+
 import java.util.ArrayList;
 
 public class SCollection extends Shape {
@@ -76,6 +79,16 @@ public class SCollection extends Shape {
 	public void accept(ShapeVisitor sv) {
 		sv.visitCollection(this);
 	}
+	
+	public SCollection copy() {
+        SCollection new_model = new SCollection();
+        new_model.addAttributes(new SelectionAttributes());
+        Iterator<Shape> iter = this.iterator();
+        while(iter.hasNext()) {
+            new_model.shapes.add(iter.next().copy());
+        }
+        return new_model;
+    }
 	
 	
 }
