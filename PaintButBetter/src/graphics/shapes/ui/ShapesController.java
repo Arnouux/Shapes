@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Rectangle;
@@ -365,6 +366,8 @@ public class ShapesController extends Controller {
 			else if (new_model.getArraySize() >= 2) {
 				this.model.add(new_model);
 			}
+			File clip = new File("Collection.wav");
+			Editor.playSound(clip);
 		}
 		
 		this.view.invalidate();

@@ -24,7 +24,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
+import java.io.File;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,6 +50,7 @@ public class Editor extends JFrame
 	SCollection model=new SCollection();
 	ColorChooser cc = new ColorChooser();
 	static Dimension preferredSize=new Dimension(800, 800);
+	static ImageIcon icone = new ImageIcon("..//img//APP1.png");
 	
 	public Editor()
 	{	
@@ -70,11 +74,15 @@ public class Editor extends JFrame
 		this.sview.setPreferredSize(preferredSize);
 		this.getContentPane().add(this.sview, java.awt.BorderLayout.CENTER);
 		
-		ImageIcon image = new ImageIcon("..\\img\\APP1.png");
+		ImageIcon image = Editor.icone;
 	    this.setIconImage(image.getImage());
 	    createMenuBar();  
 	}	
 		
+	public static ImageIcon getIcone()
+	{
+		return icone;
+	}
 	
 	private void buildModel()
 	{
@@ -116,7 +124,7 @@ public class Editor extends JFrame
 	
 	public static void main(String[] args)
 	{
-		LoadingScreen();
+		LoadingScreen(getIcone());
 		Editor frame = new Editor();
 		frame.pack();
 		frame.setVisible(true);
@@ -188,6 +196,7 @@ public class Editor extends JFrame
 		Rectangle windowBounds= this.getBounds();
 		int radius=Math.min(windowBounds.width, windowBounds.height)/5 ;
 		int chosenSize= 0;
+		File clip = new File("..//sound//Circle.wav");
 		
 		chosenColor = JColorChooser.showDialog(this, "Circle fill color chooser", filledColor);
 		if (chosenColor != null) filledColor = chosenColor;
@@ -201,7 +210,7 @@ public class Editor extends JFrame
 		c.addAttributes(new SelectionAttributes());
 		this.model.add(c);
 		this.sview.invalidate();
-		
+		playSound(clip);
 	}	
 	
 	public void createDefaultRectangle() {
@@ -212,7 +221,7 @@ public class Editor extends JFrame
 		int height = Math.min(windowBounds.width, windowBounds.height)/5;
 		int width = Math.min(windowBounds.width, windowBounds.height)/5;
 		int chosenSize= 0;
-		
+		File clip = new File("..//sound//Rectangle.wav");
 		chosenColor = JColorChooser.showDialog(this, "Rectangle  fill color chooser", filledColor);
 		if (chosenColor != null) filledColor = chosenColor;
 
@@ -229,14 +238,17 @@ public class Editor extends JFrame
 		r.addAttributes(new SelectionAttributes());
 		this.model.add(r);
 		this.sview.invalidate();
-
+		playSound(clip);
 	}
+	
+	
+	
 	
 	public void createDefaultText(){
 		Color filledColor = Color.BLACK;
 		Color strokedColor = Color.BLACK;
 		Color chosenColor = null;
-
+		File clip = new File("sound\\Text.wav");
 		chosenColor = JColorChooser.showDialog(this, "Circle fill color chooser", filledColor);
 		if (chosenColor != null) filledColor = chosenColor;
 
@@ -249,12 +261,13 @@ public class Editor extends JFrame
 	    t.addAttributes(new FontAttributes());
 	    this.model.add(t);
 	    this.sview.invalidate();
+	    playSound(clip);
 	}
 	
-	public static void LoadingScreen()
+	public static void LoadingScreen(ImageIcon icone)
 	{	
 		JFrame ls = new JFrame();
-		ImageIcon waitingScreen = new ImageIcon("..\\img\\APP1.png");
+		ImageIcon waitingScreen = icone;
 		JLabel ws=new JLabel(waitingScreen);
 		ws.setSize(preferredSize.height*(4/5), preferredSize.height*(4/5) );
 		ls.add(ws);
@@ -268,6 +281,17 @@ public class Editor extends JFrame
 		ls.setVisible(false);
 		ls.dispatchEvent(new WindowEvent(ls, WindowEvent.WINDOW_CLOSING));
 		
+	}
+	
+	public static void playSound(File Sound) { //Internet Tuto
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(Sound));
+			clip.start();
+			System.out.println("coucou");
+			
+		}
+		catch(Exception e) {}
 	}
 	
 	
