@@ -6,5 +6,5 @@ Todo :
 - [x] Ctrl + Z
 - [x] Selection de pls forme et les collectionner.
 - [ ] Rotation
-- [ ] Poser une forme = un son
+- [x] Poser une forme = un son
 - [x] Copié collé
