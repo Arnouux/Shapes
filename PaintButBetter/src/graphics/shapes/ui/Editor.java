@@ -50,7 +50,7 @@ public class Editor extends JFrame
 	SCollection model=new SCollection();
 	ColorChooser cc = new ColorChooser();
 	static Dimension preferredSize=new Dimension(800, 800);
-	static ImageIcon icone = new ImageIcon("..//img//APP1.png");
+	static ImageIcon icone = new ImageIcon("..\\img\\APP1.png");
 	
 	public Editor()
 	{	
@@ -248,7 +248,7 @@ public class Editor extends JFrame
 		Color filledColor = Color.BLACK;
 		Color strokedColor = Color.BLACK;
 		Color chosenColor = null;
-		File clip = new File("sound\\Text.wav");
+		File clip = new File("..//sound//Text.wav");
 		chosenColor = JColorChooser.showDialog(this, "Circle fill color chooser", filledColor);
 		if (chosenColor != null) filledColor = chosenColor;
 
@@ -288,7 +288,7 @@ public class Editor extends JFrame
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(Sound));
 			clip.start();
-			System.out.println("coucou");
+			
 			
 		}
 		catch(Exception e) {}
