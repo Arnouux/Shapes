@@ -185,13 +185,18 @@ public class Editor extends JFrame
 		Color filledColor = Color.BLACK;
 		Color strokedColor = Color.BLACK;
 		Color chosenColor = null;
-
+		Rectangle windowBounds= this.getBounds();
+		int radius=Math.min(windowBounds.width, windowBounds.height)/5 ;
+		int chosenSize= 0;
+		
 		chosenColor = JColorChooser.showDialog(this, "Circle fill color chooser", filledColor);
 		if (chosenColor != null) filledColor = chosenColor;
 		
+		chosenSize =Integer.valueOf(JOptionPane.showInputDialog(this, "Radius ?", radius));
+		if(chosenSize != 0) radius = chosenSize;
 		
-		Rectangle windowBounds= this.getBounds();
-		SCircle c = new SCircle(new Point(windowBounds.width/2,windowBounds.height/2), Math.min(windowBounds.width, windowBounds.height)/5);
+		
+		SCircle c = new SCircle(new Point(windowBounds.width/2,windowBounds.height/2), radius);
 		c.addAttributes(new ColorAttributes(true,true,filledColor,strokedColor));
 		c.addAttributes(new SelectionAttributes());
 		this.model.add(c);
@@ -200,19 +205,26 @@ public class Editor extends JFrame
 	}	
 	
 	public void createDefaultRectangle() {
-		
+		Rectangle windowBounds= this.getBounds();
 		Color filledColor = Color.BLACK;
 		Color strokedColor = Color.BLACK;
 		Color chosenColor = null;
-
+		int height = Math.min(windowBounds.width, windowBounds.height)/5;
+		int width = Math.min(windowBounds.width, windowBounds.height)/5;
+		int chosenSize= 0;
+		
 		chosenColor = JColorChooser.showDialog(this, "Rectangle  fill color chooser", filledColor);
 		if (chosenColor != null) filledColor = chosenColor;
 
 		chosenColor = JColorChooser.showDialog(this, "Rectangle strock color chooser", strokedColor);
 		
+		chosenSize =Integer.valueOf(JOptionPane.showInputDialog(this, "Height ?", height));
+		if(chosenSize != 0) height = chosenSize;
 		
-		Rectangle windowBounds= this.getBounds();
-		SRectangle r = new SRectangle(new Point(windowBounds.width/2,windowBounds.height/2),Math.min(windowBounds.width, windowBounds.height)/5,Math.min(windowBounds.width, windowBounds.height)/5);
+		chosenSize = Integer.valueOf(JOptionPane.showInputDialog(this, "Width ?", width));
+		if(chosenSize != 0) width = chosenSize;
+		
+		SRectangle r = new SRectangle(new Point(windowBounds.width/2,windowBounds.height/2), height, width);
 		r.addAttributes(new ColorAttributes(true,true,filledColor,strokedColor));
 		r.addAttributes(new SelectionAttributes());
 		this.model.add(r);
